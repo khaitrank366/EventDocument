@@ -45,7 +45,7 @@ public class DelegateExpand : MonoBehaviour
         greet("Born From The Rock");
 
         // Action delegate hỗ trợ từ 0 - 16 tham số đầu vào
-        Action<int, int, int, int, int> add = (a, b, c, d, e) => Debug.Log("Action: " + a + b + c + d + e);
+        Action<int, int, int, int, int> add = (a, b, c, d, e) => Debug.Log("Action: " + (a + b + c + d + e));
         add(3, 5, 7, 11, 9);
 
         // Khai báo delegate truyền thống sẽ trông như thế này ( đã kết hợp lamda expression, nếu không kết hợp phải khai báo thêm 1 hàm )
@@ -71,6 +71,8 @@ public class DelegateExpand : MonoBehaviour
         // PredicateDelegate preDelegate = (number) => number % 2 == 0;
 
         #endregion
+        GameObject loaderObj = new GameObject("DataLoader");
+        dataLoader = loaderObj.AddComponent<DataLoader>();
     }
 
     #region Callback
@@ -94,52 +96,28 @@ public class DelegateExpand : MonoBehaviour
     }
 
     public DataLoader dataLoader;
-    public CallbackHandler callbackHandler;
     private void ChooseCallback(string choice)
     {
         Action<string> callback = null;
         switch (choice)
         {
             case "1":
-                callback = callbackHandler.PrintToConsole;
+                callback = PrintToConsole;
                 break;
             case "2":
-                callback = callbackHandler.SaveToFile;
+                callback = SaveToFile;
                 break;
             case "3":
-                callback = callbackHandler.SendToServer;
+                callback = SendToServer;
                 break;
             default:
-                callback = callbackHandler.PrintToConsole;
+                callback = PrintToConsole;
                 break;
         }
 
         dataLoader.LoadData(callback);
     }
-    #endregion
-}
 
-public class DataLoader : MonoBehaviour
-{
-    // Phương thức tải dữ liệu và gọi callback khi hoàn tất
-    public void LoadData(Action<string> callback)
-    {
-        Debug.Log("Bắt đầu tải dữ liệu...");
-        StartCoroutine(SimulateDataLoading(callback));
-    }
-
-    private IEnumerator SimulateDataLoading(Action<string> callback)
-    {
-        yield return new WaitForSeconds(2f); // Giả lập tải dữ liệu trong 2 giây
-        string data = "Dữ liệu tải xong từ server Unity";
-
-        // Gọi hàm callback và truyền dữ liệu
-        callback?.Invoke(data);
-    }
-}
-
-public class CallbackHandler
-{
     public void PrintToConsole(string data)
     {
         Debug.Log($"[Console] Dữ liệu nhận được: {data}");
@@ -155,4 +133,24 @@ public class CallbackHandler
         Debug.Log($"[Server] Dữ liệu '{data}' đã được gửi tới server.");
     }
 
+    #endregion
+}
+
+public class DataLoader : MonoBehaviour
+{
+    // Phương thức tải dữ liệu và gọi callback khi hoàn tất
+    public void LoadData(Action<string> callback)
+    {
+        Debug.Log("Bắt đầu tải dữ liệu...");
+        StartCoroutine(SimulateDataLoading(callback));
+    }
+
+    private IEnumerator SimulateDataLoading(Action<string> callback)
+    {
+        yield return new WaitForSeconds(1f); // Giả lập tải dữ liệu trong 1 giây
+        string data = "Dữ liệu tải xong từ server Unity";
+
+        // Gọi hàm callback và truyền dữ liệu
+        callback?.Invoke(data);
+    }
 }

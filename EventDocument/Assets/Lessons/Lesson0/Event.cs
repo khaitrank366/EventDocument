@@ -83,7 +83,19 @@ public class Event : MonoBehaviour
         // Event được xây dựng trên MultiCast Delegate
         // nhưng an toàn và đảm bảo tính đóng gói hơn.
         // Không cho phép gán đè (=) và không thể gọi trực tiếp từ bên ngoài lớp.
+
+        /*
+         * ========================== LƯU Ý KHI DÙNG EVENT ==============================
+         * 
+         *  Hủy đăng ký (-=) khi không dùng nữa: Unity không tự động hủy đăng ký sự kiện khi GameObject bị Destroy(), 
+         *  dẫn đến memory leak hoặc NullReferenceException nếu sự kiện gọi đến một object đã bị hủy
+         *  ==> Luôn hủy đăng ký sự kiện trong OnDestroy() hoặc khi GameObject bị vô hiệu hóa OnDisable().
+         *  
+         *  Kiểm tra null (?.Invoke()) trước khi gọi sự kiện
+         *  Nếu không có subscriber nào đăng ký vào event, event.Invoke() sẽ gây lỗi NullReferenceException
+         */
         #endregion
+
     }
 
     #region Methods & Classes

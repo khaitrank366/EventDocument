@@ -42,11 +42,11 @@ public class DelegateEssential : MonoBehaviour
         MyDelegate myDelegate = ShowMessage;
 
         // Gọi phương thức thông qua delegate
-        myDelegate("ShowMessage: Hello, Delegate!");
+        myDelegate("Hello, Delegate!");
 
         // Gán phương thức khác cho delegate 
         myDelegate = PrintMessage;
-        myDelegate("PrintMessage: Another message using delegate.");
+        myDelegate("Another message using delegate.");
 
 
         /*
@@ -115,17 +115,17 @@ public class DelegateEssential : MonoBehaviour
     // Các phương thức xử lý khác nhau
     public static void SendEmail(string message)
     {
-        Console.WriteLine("📧 Email sent: " + message);
+        Debug.Log("📧 Email sent: " + message);
     }
 
     public static void LogToFile(string message)
     {
-        Console.WriteLine("📝 Log saved: " + message);
+        Debug.Log("📝 Log saved: " + message);
     }
 
     public static void ShowNotification(string message)
     {
-        Console.WriteLine("🔔 Notification: " + message);
+        Debug.Log("🔔 Notification: " + message);
     }
     #endregion 
 }
